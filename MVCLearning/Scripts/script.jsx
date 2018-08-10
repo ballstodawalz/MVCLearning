@@ -1,7 +1,7 @@
 ﻿class CommentBox extends React.Component {
     render() {
         return (
-            <div className="commentBox">
+            <div className="w3-card-2">
                 {this.props.name}
             </div>
         );
