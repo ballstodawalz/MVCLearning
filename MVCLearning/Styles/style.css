@@ -2,3 +2,10 @@
     font-family: 'Roboto', sans-serif;
     font-size:3em;
 }
+
+#content{
+    width:85%;
+    justify-content:center;
+    margin:0 auto;
+    height:100vh;
+}
