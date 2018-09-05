@@ -43,9 +43,7 @@
 
     componentDidMount() {
         fetch('https://api.sportradar.us/ncaafb-t1/2018/REG/2/schedule.json?api_key=tmgx6wjpu45uzjn732ke4swx', {
-            mode: 'no-cors', headers{
-            }
-            
+            mode: 'no-cors'
         })
             .then(results => {
                 this.setState({ name: results })
