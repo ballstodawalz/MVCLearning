@@ -44,7 +44,7 @@
     componentDidMount() {
         fetch('http://api.sportradar.us/ncaafb-t1/2018/REG/2/schedule.json?api_key=tmgx6wjpu45uzjn732ke4swx', {
             headers: new Headers({
-                'X-Originating - IP': '198.175.141.60'
+                'X-Originating-IP':'198.175.141.60'
             })
         })
             .then(results => {
