@@ -1,10 +1,26 @@
-﻿class Form extends React.Component {
+﻿class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            repeat: [0],
-            name: '',
-            games: ''
+            homeTeam: '',
+            awayTeam: ''
+        }
+    }
+
+    render() {
+        return (
+            < div className='w3-card' >
+                {this.props.home} <span className='w3-round w3-teal w3-center'> vs </span> {this.props.away}
+            </div >
+        )
+    }
+}
+
+class Form extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            games: []
         };
 
         this.handleRepeatChange = this.handleRepeatChange.bind(this);
@@ -44,32 +60,24 @@
 
     componentDidMount() {
         fetch('/home/getsportsdataasync')
-            .then(response => response.text())
-            .then(text => this.setState({ games: text }))
+            .then(response => {
+                let textResponse = response.text();
+                return textResponse;
+            })
+            .then(jsonObj => {
+                let y = JSON.parse(jsonObj);
+                y = JSON.parse(y);
+                var ar = Array.from(y.games);
+                ar.forEach(item => this.setState({ games: [...this.state.games, item] }))
+            }
+            )
     }
+
 
     render() {
         return (
             <div>
-                <form>
-                    <label>
-                        Name:
-                        <input type="text" maxLength={40} value={this.state.name} onChange={this.handleNameChange} />
-                    </label>
-
-                    <br />
-
-                    <label>
-                        Repeat:
-                        <input type="range" min={0} max={7} value={this.state.repeat[this.state.repeat.length - 1]} onChange={this.handleRepeatChange} /> {this.state.repeat[this.state.repeat.length - 1]}
-                    </label>
-                </form>
-
-                {this.state.repeat.map((i) => <div key={i}>{this.state.name}</div>)}
-
-                <div style={{ width: '100%', overflowWrap: 'break-word', fontSize: 10 }}>
-                   {this.state['games']}
-                </div>
+                {this.state.games.map((i) => <div key={i}><Game home={i.home} away={i.away} /></div>)}
             </div>
         );
     }
