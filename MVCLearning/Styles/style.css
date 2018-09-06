@@ -6,6 +6,5 @@
 #content{
     justify-content:center;
     margin:0 auto;
-    height:100vh;
-    overflow-y:hidden;
+    width:100%;
 }

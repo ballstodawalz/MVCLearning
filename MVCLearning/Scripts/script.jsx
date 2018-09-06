@@ -4,6 +4,7 @@
         this.state = {
             repeat: [0],
             name: '',
+            games: ''
         };
 
         this.handleRepeatChange = this.handleRepeatChange.bind(this);
@@ -42,12 +43,9 @@
     }
 
     componentDidMount() {
-        fetch('https://api.sportradar.us/ncaafb-t1/2018/REG/2/schedule.json?api_key=tmgx6wjpu45uzjn732ke4swx', {
-            mode: 'no-cors'
-        })
-            .then(results => {
-                this.setState({ name: results })
-            })
+        fetch('/home/getsportsdataasync')
+            .then(response => response.text())
+            .then(text => this.setState({ games: text }))
     }
 
     render() {
@@ -69,6 +67,9 @@
 
                 {this.state.repeat.map((i) => <div key={i}>{this.state.name}</div>)}
 
+                <div style={{ width: '100%', overflowWrap: 'break-word', fontSize: 10 }}>
+                   {this.state['games']}
+                </div>
             </div>
         );
     }
