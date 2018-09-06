@@ -1,17 +1,38 @@
 ﻿class Game extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            homeTeam: '',
-            awayTeam: ''
-        }
+        this.dateTimeConvert = this.dateTimeConvert.bind(this);
+        this.getNetwork = this.getNetwork.bind(this);
+    }
+    dateTimeConvert(value) {
+        var date = new Date(value);
+
+        return date.toLocaleDateString() + '          ' + date.toLocaleTimeString()
+    }
+
+    getNetwork(broadcast) {
+        let net = broadcast == undefined ? '' : broadcast.network;
+        return net;
     }
 
     render() {
         return (
-            < div className='w3-card' >
-                {this.props.home} <span className='w3-round w3-teal w3-center'> vs </span> {this.props.away}
+            < div className='w3-card w3-center' >
+                <div>
+                    {this.props.home} <span className='w3-round w3-center text-align-center'>vs</span> {this.props.away}
+                </div>
+                <div>
+                    {this.dateTimeConvert(this.props.date)}
+                </div>
+                <div className='w3-left'>
+                    {this.props.homeScore}
+                </div>
+                <div className='w3-right'>
+                    {this.props.awayScore}
+                </div>
+                <span className='w3-round w3-red w3-center text-align-center'>{this.getNetwork(this.props.broadcast)}</span>
             </div >
+
         )
     }
 }
@@ -68,6 +89,7 @@ class Form extends React.Component {
                 let y = JSON.parse(jsonObj);
                 y = JSON.parse(y);
                 var ar = Array.from(y.games);
+                console.log(ar);
                 ar.forEach(item => this.setState({ games: [...this.state.games, item] }))
             }
             )
@@ -77,7 +99,7 @@ class Form extends React.Component {
     render() {
         return (
             <div>
-                {this.state.games.map((i) => <div key={i}><Game home={i.home} away={i.away} /></div>)}
+                {this.state.games.map((i) => i.status == 'closed' ? '' : <div key={i}><Game home={i.home} away={i.away} date={i.scheduled} homeScore={i.home_points} awayScore={i.away_points} broadcast={i.broadcast} /></div>)}
             </div>
         );
     }
