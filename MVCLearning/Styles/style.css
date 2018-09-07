@@ -3,8 +3,38 @@
     font-size:3em;
 }
 
-#content{
+#content {
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.scoreHome{
+    float:right;
+    margin:15px;
+}
+
+.scoreAway {
+    float: left;
+    margin: 15px;
+}
+
+.matchup{
+    margin:auto;
     justify-content:center;
-    margin:0 auto;
-    width:100%;
+}
+
+.winning {
+    color: #98ee99;
+}
+
+.losing {
+    color: #ffa4a2;
+}
+img{
+    float: left;
+    width:100px;
+    position:fixed;
+    left: 30px;
+    margin-top:25px;
 }

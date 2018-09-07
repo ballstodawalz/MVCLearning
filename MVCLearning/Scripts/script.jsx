@@ -1,13 +1,18 @@
 ﻿class Game extends React.Component {
     constructor(props) {
         super(props);
-        this.dateTimeConvert = this.dateTimeConvert.bind(this);
+        this.dateConvert = this.dateConvert.bind(this);
+        this.timeConvert = this.timeConvert.bind(this);
         this.getNetwork = this.getNetwork.bind(this);
     }
-    dateTimeConvert(value) {
+    dateConvert(value) {
         var date = new Date(value);
 
-        return date.toLocaleDateString() + '          ' + date.toLocaleTimeString()
+        return date.toLocaleDateString();
+    }
+    timeConvert(value) {
+        var date = new Date(value);
+        return date.toLocaleTimeString();
     }
 
     getNetwork(broadcast) {
@@ -18,19 +23,29 @@
     render() {
         return (
             < div className='w3-card w3-center' >
-                <div>
-                    {this.props.home} <span className='w3-round w3-center text-align-center'>vs</span> {this.props.away}
+                <div className="matchup">
+                    <div className={this.props.homeScore > this.props.awayScore ? "winning scoreHome" : "losing scoreHome"}>
+                        {this.props.homeScore}
+                    </div>
+
+                    <div className={this.props.awayScore > this.props.homeScore ? "winning scoreAway" : "losing scoreAway"}>
+                        {this.props.awayScore}
+                    </div>
+                    <div>
+                        {this.props.home} <span className='w3-round w3-center text-align-center'>vs</span> {this.props.away}
+                    </div>
+                  
+
+                    <div>
+                        {this.dateConvert(this.props.date)}
+                    </div>
+                    <div>
+                        {this.timeConvert(this.props.date)}
+                    </div>
+                    <span className='w3-round w3-red w3-center text-align-center'>{this.getNetwork(this.props.broadcast)}</span>
                 </div>
-                <div>
-                    {this.dateTimeConvert(this.props.date)}
-                </div>
-                <div className='w3-left'>
-                    {this.props.homeScore}
-                </div>
-                <div className='w3-right'>
-                    {this.props.awayScore}
-                </div>
-                <span className='w3-round w3-red w3-center text-align-center'>{this.getNetwork(this.props.broadcast)}</span>
+
+
             </div >
 
         )
@@ -99,7 +114,7 @@ class Form extends React.Component {
     render() {
         return (
             <div>
-                {this.state.games.map((i) => i.status == 'closed' ? '' : <div key={i}><Game home={i.home} away={i.away} date={i.scheduled} homeScore={i.home_points} awayScore={i.away_points} broadcast={i.broadcast} /></div>)}
+                {this.state.games.map((i) => <div key={i}><Game home={i.home} away={i.away} date={i.scheduled} homeScore={i.home_points} awayScore={i.away_points} broadcast={i.broadcast} /></div>)}
             </div>
         );
     }
