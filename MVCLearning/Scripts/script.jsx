@@ -4,6 +4,8 @@
         this.dateConvert = this.dateConvert.bind(this);
         this.timeConvert = this.timeConvert.bind(this);
         this.getNetwork = this.getNetwork.bind(this);
+        this.getOdds = this.getOdds.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
     dateConvert(value) {
         var date = new Date(value);
@@ -20,9 +22,28 @@
         return net;
     }
 
+    getOdds(game) {
+        ar = []
+        fetch('/home/getsportsoddsdataasync')
+            .then(response => {
+                let textResponse = response.text();
+                return textResponse;
+            })
+            .then(jsonObj => {
+                let y = JSON.parse(jsonObj);
+                y = JSON.parse(y);
+                ar = Array.from(y.game_data);
+            }
+            )
+        console.log(ar);
+    }
+
+    handleClick() {
+    }
+
     render() {
         return (
-            < div className='w3-card w3-center' >
+            < div className='w3-card w3-center' onClick={this.handleClick}>
                 <div className="matchup">
                     <div className={this.props.homeScore > this.props.awayScore ? "winning scoreHome" : "losing scoreHome"}>
                         {this.props.homeScore}
@@ -34,7 +55,7 @@
                     <div>
                         {this.props.home} <span className='w3-round w3-center text-align-center'>vs</span> {this.props.away}
                     </div>
-                  
+
 
                     <div>
                         {this.dateConvert(this.props.date)}
@@ -44,8 +65,7 @@
                     </div>
                     <span className='w3-round w3-red w3-center text-align-center'>{this.getNetwork(this.props.broadcast)}</span>
                 </div>
-
-
+                <Odds home={this.props.home} away={this.props.away} />
             </div >
 
         )
@@ -56,14 +76,16 @@ class Form extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            games: []
+            games: [],
+            gamesFull : []
         };
 
         this.handleRepeatChange = this.handleRepeatChange.bind(this);
         this.repeatEvent = this.repeatEvent.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
         this.changeName = this.changeName.bind(this);
-        this.handle = this.handleError.bind(this);
+        this.handleError = this.handleError.bind(this);
+        this.matchUpBettingData = this.matchUpBettingData.bind(this);
     }
 
     handleRepeatChange(e) {
@@ -104,12 +126,37 @@ class Form extends React.Component {
                 let y = JSON.parse(jsonObj);
                 y = JSON.parse(y);
                 var ar = Array.from(y.games);
-                console.log(ar);
                 ar.forEach(item => this.setState({ games: [...this.state.games, item] }))
             }
-            )
+            );
+
+        this.matchUpBettingData();
     }
 
+    matchUpBettingData() {
+        var myarray = [];
+        fetch('/home/getsportsoddsdataasync')
+            .then(response => {
+                let textResponse = response.text();
+                return textResponse;
+            })
+            .then(jsonObj => {
+                let y = JSON.parse(jsonObj);
+                y = JSON.parse(y);
+                var ar = Array.from(y.sport_events);
+                ar.forEach(item => {
+                    let y = this.state.games.find(otheritem => {
+                        if (otheritem.home == item.competitors[0].abbreviation) {
+                            let yay = { ...otheritem, ...item };
+                            console.log(yay);
+                            this.setState({
+                                gamesFull: [...this.state.gamesFull, yay]
+                            });
+                        }
+                    });
+                });
+            });
+    }
 
     render() {
         return (
@@ -125,6 +172,19 @@ class Parent extends React.Component {
         return (
             <Form />
         )
+    }
+}
+
+class Odds extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+    }
+
+    render() {
+        return (this.props.home);
     }
 }
 
