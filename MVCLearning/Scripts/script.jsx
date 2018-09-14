@@ -65,7 +65,7 @@
                     </div>
                     <span className='w3-round w3-red w3-center text-align-center'>{this.getNetwork(this.props.broadcast)}</span>
                 </div>
-                <Odds home={this.props.home} away={this.props.away} />
+                <Odds home={this.props.oddsHome} away={this.props.oddsAway} />
             </div >
 
         )
@@ -77,7 +77,7 @@ class Form extends React.Component {
         super(props);
         this.state = {
             games: [],
-            gamesFull : []
+            gamesFull: []
         };
 
         this.handleRepeatChange = this.handleRepeatChange.bind(this);
@@ -156,14 +156,15 @@ class Form extends React.Component {
                     });
                 });
             });
+        console.log(this.state.gamesFull);
     }
 
     render() {
         return (
             <div>
-                {this.state.games.map((i) => <div key={i}><Game home={i.home} away={i.away} date={i.scheduled} homeScore={i.home_points} awayScore={i.away_points} broadcast={i.broadcast} /></div>)}
+                {this.state.games.map((i) => <div key={i}><Game home={i.home} away={i.away} date={i.scheduled} homeScore={i.home_points} awayScore={i.away_points} broadcast={i.broadcast} oddHome={i.consensus != null ? i.consensus.lines[2].outcomes[0].odds : ''} oddsAway={i.consensus != null ? i.consensus.lines[2].outcomes[1].odds : ''}
+                /></div>)}
             </div>
-            //oddHome={i.consensus.lines[2].outcomes[0].odds} oddsAway={i.consensus.lines[2].outcomes[1].odds}
         );
     }
 }
@@ -185,7 +186,7 @@ class Odds extends React.Component {
     }
 
     render() {
-        return (this.props.home);
+        return (<div>{this.props.oddsHome}</div>);
     }
 }
 
