@@ -163,6 +163,7 @@ class Form extends React.Component {
             <div>
                 {this.state.games.map((i) => <div key={i}><Game home={i.home} away={i.away} date={i.scheduled} homeScore={i.home_points} awayScore={i.away_points} broadcast={i.broadcast} /></div>)}
             </div>
+            //oddHome={i.consensus.lines[2].outcomes[0].odds} oddsAway={i.consensus.lines[2].outcomes[1].odds}
         );
     }
 }
