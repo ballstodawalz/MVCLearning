@@ -1,10 +1,12 @@
 ﻿using MVCLearning.Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace MVCLearning.Controllers
 {
@@ -27,11 +29,11 @@ namespace MVCLearning.Controllers
 
         }
 
-        public async System.Threading.Tasks.Task<JsonResult> GetSportsOddsDataAsync()
+        public async System.Threading.Tasks.Task<JsonResult> GetTeams()
         {
-            string dateTime = DateTime.Now.ToString("yyyy-MM-dd");
-            var responseString = await client.GetStringAsync($"https://api.sportradar.com/oddscomparison-rowt1/en/us/sports/sr:sport:16/{dateTime}/schedule.json?api_key=xsx7s3dw4252u679kz7fuah9");
+            var responseString = await client.GetStringAsync("http://api.sportradar.us/ncaafb-t1/teams/FBS/hierarchy.json?api_key=tmgx6wjpu45uzjn732ke4swx");
             return Json(responseString, JsonRequestBehavior.AllowGet);
+
         }
 
         public int GetGameWeek()
